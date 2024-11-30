@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <title >Emergence Map</title>
+
+    <style>
+    body {
+      font-family: sans-serif;
+      font-size: 22px
+    }
+
+    .container1 {
+        width: 500px;
+        align-items: center;
+        max-width: 1500px;
+        margin: 0 auto;
+        border-radius: 2px;
+        box-shadow:
+        0px 0px 0px 5px rgba( 255,255,255,0.4 ),
+        0px 4px 20px rgba( 0,0,0,0.33 );
+    }
+    form {
+       width: 500px;
+        align-items: center;
+        max-width: 1500px;
+        margin: 0 auto;
+      border-radius: 2px;
+    }
+    h2 {
+        margin:0 0 50px 0;
+        padding:10px;
+        text-align:center;
+        font-size:30px;
+        text-color: #378070;
+        border-bottom:solid 1px #e5e5e5;
+    }
+    input[type=submit] {
+        align-content: center;
+        width: 90%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 4px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    input[type=text] {
+
+        align-content: center;
+        width: 80%;
+        padding: 4px 20px;
+        margin: 8px 0;
+        border-color: rgba(17,27,14,0.83);
+        border-radius: 4px;
+    }
+    input[type=password] {
+
+        align-content: center;
+        width: 80%;
+        padding: 4px 20px;
+        margin: 8px 0;
+        border-color: rgba(17,27,14,0.83);
+        border-radius: 4px;
+    }
+
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <!-- Image and text -->
+        <nav class="navbar navbar-light" style="background-color: #43a047;height:73px;border-radius:5px">
+
+            <div>
+                <img src="/static/FluroSat_logo_300.png" align="left" width="65" height="65"
+                     class="d-inline-block align-top" style="background-color: #000;border-radius:5px">
+                <a class="navbar-brand" href="#" style="position:relative; top:20px; left:30px">Emergence map</a>
+            </div>
+        </nav>
+    </div>
+
+    <br> <br> <br> <br>
+    <div  align="center" class="container1">
+        <h2>  Login For FluroSense</h2>
+        <div >
+                <form method="post" >
+                  {% csrf_token %}
+                    <br>
+                    <input type="text" name="username" placeholder="Username">
+                    <br>
+                     <input type="password" name="password" placeholder="Password">
+                    <br><br>
+                    <input type="submit" name="" value="Login">
+                </form>
+                {{login_err}}
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous">
+
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+</body>
+</html>

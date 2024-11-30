@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+        $(function(){
+        $("#id_img").change(function(){
+            var file=$("#id_img").get(0).files[0];
+             var reader = new FileReader();
+            reader.onload = (function(){
+            return function(e) {
+              var image = '<img  alt="The image is ready to upload, but not support for this browser to preview"src="'+ e.target.result +'"width="600px" hiegt="600px" style="position:relative; top:50px;">';
+               $("#imagePreview").children().replaceWith(image)
+            };
+          })();
+
+          reader.readAsDataURL(file);
+        });
+    });
+
+
+
+    $( document ).ready(function() {
+        $("#analysisButton").click(function() {
+            $("#analysisButton").prop('disabled', true);
+            $("#analysisButton").html('Analyzing')
+
+            var minimum_gap = $("#minimum_gap").val()
+            var imgsrc = $('#imagePreview').children().attr('src')
+            var sensitive = $("#sensitive").val()
+            var loading_log = '<img src="/static/media/25.gif" align="center" width="64px" hiegt="64px" class="d-inline-block align-top" style="position:relative; top:150px;">'
+            $("#imagePreview").children().replaceWith(loading_log)
+            $.ajax({
+                url: "http://127.0.0.1:8000/emergence/analysis/",
+                type: 'post',
+                data: {'minimum_gap': minimum_gap,
+                        'imgsrc': imgsrc,
+                        'sensitive': sensitive},
+                success: function (result) {
+                    alert("Analysis completed")
+                    var analysis_image = '<img  src="/static/merged/merged('+minimum_gap+')('+sensitive+').png"width="600px" hiegt="600px" style="position:relative; top:50px;">';
+                    $("#imagePreview").children().replaceWith(analysis_image)
+                    $("#gap_miss_length").text("Totally length of gaps: "+parseInt(result.gap_miss_length)+"  meters");
+                    $("#miss_percentage").text("Percentage of Missing plants: "+parseInt(result.miss_percentage * 100)+"%");
+                    $("#yield_loss_result").text("Percentage yield loss: "+parseInt(result.yield_loss_result) + 2+"%");
+                    $("#analysisButton").prop('disabled', false);
+                    $("#analysisButton").html('Run Analysis')
+
+                },
+                })
+            });
+    });
+
+    </script>
+
+</head>
+
+    <nav class="navbar navbar-light" style="background-color:#36A27D;" >
+        <div>
+            <img src="/static/FluroSat_logo_300.png" align="left" width="65" height="65" class="d-inline-block align-top"
+                style="border-radius:5px">
+        </div>
+    </nav>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span6">
+            <div style="float:right; width:50%;text-align:center;">
+                <div id="imagePreview">
+                    <img src="/static/media/downloadimg.png" align="center" width="450px" hiegt="450px" class="d-inline-block align-top"
+                        style="position:relative; top:100px;">
+                </div>
+            </div>
+
+		</div>
+		<div class="span6">
+
+             <div style="position:relative; top:80px;">
+        <div>
+
+            <div style="float:right; width:35%">
+                <div id="user_input" style="position:relative; top:20px;">
+                    <h4>Step 1: Upload the image you want to analysis</h4>
+                    <br>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                            <button type="button" id="submit" class="btn btn-secondary">Image saved
+
+                            </button>
+                    </form>
+
+                    <div class="form-group" style="position:relative; top:80px">
+                        <h4>Step 2: Set your input values and start</h4>
+                        <br>
+                        <div>
+                            <label for="minimum_gap">Minimum gap:</label>
+                            <input disabled type="text" class="form-control" id="minimum_gap" style="width:35px; position:relative; bottom:37px; left:107px;"
+                                value=7>
+                        </div>
+                        <div style="position:relative; bottom:30px;">
+                            <label for="sensitive">Sensitive:</label>
+                            <select id="sensitive" style="position:relative;left:20px;" disabled>
+                                <option value=0.3>0.1</option>
+                                <option value=0.3>0.2</option>
+                                <option value=0.3 selected="selected">0.3</option>
+                                <option value=0.4>0.4</option>
+                                <option value=0.4>0.5</option>
+                                <option value=0.4>0.6</option>
+                                <option value=0.5>0.7</option>
+                                <option value=0.5>0.8</option>
+                                <option value=0.5>0.9</option>
+
+                            </select>
+                        </div>
+
+                    <ul  style="position:relative; bottom:110px; left:160px" ; >
+                        <li id="miss_percentage"> Percentage of Missing plants:<b>15%</b></li>
+                        <li id="gap_miss_length">Totally length of gaps :<b>987 meters</b></li>
+                        <li id="yield_loss_result">Percentage yield loss: <b>12%</b></li>
+
+                    </ul>
+                </div>
+
+                        <div>
+                            <button  style="position:relative;" type="button" id="analysisButton" class="btn btn-success">Analysis completed, click to start again
+
+                            </button>
+                        </div>
+                        <div>
+                            <img src="" align="center" id="imageAnalysis" width="450px" hiegt="450px" class="d-inline-block align-top"
+                                style="position:relative; top:50px;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- <div style="position:relative; top:200px;">
+                <button type="button" class="btn btn-outline-primary">Download Shapefiles</button>
+
+            </div> -->
+            </div>
+        </div>
+    </div>
+
+		</div>
+	</div>
+</div>
+<body>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous">
+
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
