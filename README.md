@@ -4,6 +4,8 @@
 The Emergency Map System for Farmers is a comprehensive web-based platform designed to assist farmers in identifying gaps in crop planting and making informed replanting decisions. By leveraging computer vision and scientific data analysis, the system aims to optimize agricultural productivity and provide actionable insights.
 
 ---
+## Preview
+![Preview of Emergency Map System](assets/preview.png)
 
 ## Features
 - **Crop Gap Detection**: Identify planting gaps using computer vision with OpenCV.
